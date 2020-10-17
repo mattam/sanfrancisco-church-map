@@ -8,8 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "leaflet": "^1.7.1",
     "next": "9.5.5",
     "react": "16.14.0",
-    "react-dom": "16.14.0"
+    "react-dom": "16.14.0",
+    "react-leaflet": "^2.7.0",
+    "react-leaflet-universal": "^2.2.1"
   }
 }
