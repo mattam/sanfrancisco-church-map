@@ -7,12 +7,24 @@ import {
   Popup,
 } from "react-leaflet-universal";
 
+const renderList = (items) => {
+  let myArr = Array.from(items).sort();
+  console.log("myArr", myArr);
+  return myArr.map((item) => {
+    console.log("item", item);
+    return <li>{item}</li>;
+  });
+};
+
 export default function MapComponent(props) {
   const state = {
     lat: 37.75,
     lng: -122.438,
     zoom: 12,
   };
+  let attributeClass = new Set();
+  let religion = new Set();
+  let numChurches = 0;
   return props.churches ? (
     <div>
       <Map
@@ -26,7 +38,11 @@ export default function MapComponent(props) {
         />
         {props.churches.map(({ attributes: church }) => {
           if (church.NLat) {
+            numChurches++;
+            attributeClass.add(church["Class"]);
+            religion.add(church["Religion"]);
             const point = [church.NLat, church.NLong];
+
             return (
               <Marker position={point} key={church.FID}>
                 <Popup>
@@ -43,7 +59,14 @@ export default function MapComponent(props) {
           }
         })}
       </Map>
-      <h3>Number of churches mapped: {props.churches.length}</h3>
+      <div className="notes">
+        <h3>Number of entries in database: {props.churches.length}</h3>
+        <h3>Number of churches mapped: {numChurches}</h3>
+        <h3>
+          Classes: <ul>{renderList(attributeClass)}</ul>
+        </h3>
+        <h3>Religions {renderList(religion)}</h3>
+      </div>
     </div>
   ) : (
     "Data is loading..."
