@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.notes {
+  max-width: 500px;
+}
