@@ -7,31 +7,44 @@ import {
   Popup,
 } from "react-leaflet-universal";
 
-const DEFAULT_VIEWPORT = {
-  center: [51.505, -0.09],
-  zoom: 13,
-};
-
 export default function MapComponent(props) {
-  console.log("props: ", props);
   const state = {
-    lat: 37.7749,
-    lng: -122.4194,
-    zoom: 13,
-    viewport: DEFAULT_VIEWPORT,
+    lat: 37.75,
+    lng: -122.438,
+    zoom: 12,
   };
   return props.churches ? (
-    <Map
-      viewport={state.viewport}
-      center={[state.lat, state.lng]}
-      zoom={state.zoom}
-      style={{ width: "500px", height: "500px" }}
-    >
-      <TileLayer
-        attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-    </Map>
+    <div>
+      <Map
+        center={[state.lat, state.lng]}
+        zoom={state.zoom}
+        style={{ width: "500px", height: "500px" }}
+      >
+        <TileLayer
+          attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {props.churches.map(({ attributes: church }) => {
+          if (church.NLat) {
+            const point = [church.NLat, church.NLong];
+            return (
+              <Marker position={point} key={church.FID}>
+                <Popup>
+                  <h2>{church["Name"]}</h2>
+                  <span>
+                    ADDRESS: {church["Address"]}, {church["City"]} -{" "}
+                    {church["ZIP"]}
+                  </span>
+                  <br />
+                  <br />
+                </Popup>
+              </Marker>
+            );
+          }
+        })}
+      </Map>
+      <h3>Number of churches mapped: {props.churches.length}</h3>
+    </div>
   ) : (
     "Data is loading..."
   );
