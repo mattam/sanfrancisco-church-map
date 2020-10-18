@@ -15,7 +15,7 @@ const renderList = (items) => {
 };
 
 export default function MapComponent(props) {
-  const [religion, setReligion] = useState("Evangelical");
+  const [religion, setReligion] = useState("All");
   const state = {
     lat: 37.75,
     lng: -122.438,
@@ -37,7 +37,9 @@ export default function MapComponent(props) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {props.churches
-          .filter(({ attributes: church }) => church["Religion"] === religion)
+          .filter(({ attributes: church }) => {
+            return religion === "All" || church["Religion"] === religion;
+          })
           .map(({ attributes: church }) => {
             if (church.NLat) {
               numChurches++;
@@ -49,10 +51,23 @@ export default function MapComponent(props) {
                 <Marker position={point} key={church.FID}>
                   <Popup>
                     <h2>{church["Name"]}</h2>
-                    <span>
-                      ADDRESS: {church["Address"]}, {church["City"]} -{" "}
-                      {church["ZIP"]}
-                    </span>
+                    <p>
+                      <h3>Phone:</h3> {church["Phone"]}
+                    </p>
+                    <p>
+                      <h3>Address:</h3>
+                      {church["Address"]}
+                      <br />
+                    </p>
+                    {church["Website"].length > 2 && (
+                      <p>
+                        <h3>Website:</h3>{" "}
+                        <a target="_blank" href={church["Website"]}>
+                          {church["Website"]}
+                        </a>
+                      </p>
+                    )}
+
                     <br />
                     <br />
                   </Popup>
@@ -70,6 +85,7 @@ export default function MapComponent(props) {
             value={religion}
             onChange={(event) => setReligion(event.currentTarget.value)}
           >
+            <option value="All">All</option>
             <option value="Buddhist">Buddhist</option>
             <option value="Evangelical">Evangelical</option>
             <option value="Hindu">Hindu</option>

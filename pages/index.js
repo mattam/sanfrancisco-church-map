@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import dynamic from "next/dynamic";
 // const Map = dynamic(() => import("./components/Map"), { ssr: false });
 import Map from "./components/Map";
-import YWAMChurches from "../data/ywam-cleanedchurchdata.json";
+import YWAMChurches from "../data/ywam/ywam-cleanedchurchdata.json";
 
 export default function Home() {
   return (
