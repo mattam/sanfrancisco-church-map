@@ -1,5 +1,5 @@
 const fs = require("fs");
-var esridata = require("./ywam-churchdata.json");
+var esridata = require("./ywam/ywam-churchdata.json");
 
 // console.log("esridata.operationalLayers", esridata.operationalLayers);
 
